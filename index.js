@@ -8,25 +8,26 @@ firebase.initializeApp({
   databaseURL: "https://hyperbot-d6494.firebaseio.com"
 });
 
-var iPhoneref = firebase.database().ref().child('iPhoneHyper');
-iPhoneref.on('value', function(snap){
+var controlRef = firebase.database().ref().child('control');
+controlRef.on('value', function(snap){
   console.log(snap.val());
 })
 
 app.get('/', function(req, res, next){
-    res.sendFile(__dirname + '/index.html');
+    res.send('recieved socket');
 });
 
 io.on('connection', function(socket){
-    // console.log('a user connected');
-    // socket.on('disconnect', function(){
-    //     console.log('user disconnected');
-    // })
+    console.log('a user connected');
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+    })
     socket.on('chat message', function(msg){
+        console.log(msg)
         io.emit('chat message', msg);
     })
 })
 
-http.listen(3000, function(){
-    console.log('listening on *:3000');
+http.listen(3030, function(){
+    console.log('listening on *:3030');
 });
