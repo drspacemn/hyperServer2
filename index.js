@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var five = require('johnny-five');
 
 var firebase = require("firebase");
 firebase.initializeApp({
@@ -12,6 +13,72 @@ var controlRef = firebase.database().ref().child('control');
 controlRef.on('value', function(snap){
   console.log(snap.val());
 })
+
+var goProRef = firebase.database().ref().child('goProHyper');
+goProRef.on('value', function(snap){
+    var snap = snap.val();
+    if(snap === null){
+        console.log('no new goPro hyperlapses')
+    } else{
+        console.log('recieved goPro hyperlapse')
+    }
+    for(var key in snap){
+        if(!snap[key].isDone){
+            //time, dist, interval
+       
+        inProgress(goProRef, key);
+           var numMovements = (snap[key].time * 60) / snap[key].interval;
+           var lengthMovements = snap[key].dist/numMovements;
+           var interval = snap[key].interval * 1000;
+
+           var move = function(){
+               console.log(numMovements)
+               numMovements--;  
+               if(numMovements < 0){
+               clearInterval(this);
+               goProRef.child(key).update({isDone: true})
+            }
+           }
+            
+           setInterval(move, interval);
+         
+        }        
+    }    
+})
+var iPhoneRef = firebase.database().ref().child('iPhoneHyper');
+iPhoneRef.on('value', function(snap){
+    var snap = snap.val();    
+    if(snap === null){
+        console.log('no new iphone hyperlapses')
+    } else{
+        console.log('recieved iphne hyperlapse')
+    }
+    for(var key in snap){
+        if(!snap[key].isDone){
+            //time, dist, interval
+        inProgress(iPhoneRef, key);
+           var numMovements = (snap[key].time * 60) / snap[key].interval;
+           var lengthMovements = snap[key].dist/numMovements;
+           var interval = snap[key].interval * 1000;
+
+           var move = function(){
+               console.log(numMovements)
+               numMovements--;  
+               if(numMovements < 0){
+               clearInterval(this);
+               iPhoneRef.child(key).update({isDone: true})
+            }
+           }
+            
+           setInterval(move, interval);
+         
+        }        
+    }  
+})
+
+function inProgress(ref, key){
+    return ref.child(key).update({isDone: 'inProgress'})
+}
 
 app.get('/', function(req, res, next){
     res.send('recieved socket');
