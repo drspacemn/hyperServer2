@@ -1,15 +1,29 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var five = require('johnny-five');
+var five = require('johnny-five'), board, motor, led;
 var Raspi = require("raspi-io");
 var board = new five.Board({
 	io: new Raspi()
 });
 
 board.on("ready", function(){
-	var led = new five.Led("P1-15");
-	led.blink(1000);
+    motor = new five.Motor("P1-15");
+    board.repl.inject({motor: motor});
+
+    motor.on("start", function(){
+        console.log("start", Date.now());
+
+        board.wait(2000, function(){
+            motor.stop();
+        });
+    });
+
+    motor.on("stop", function(){
+        console.log("stop", Date.now());
+    });
+
+    motor.start();
 });
 
 var firebase = require("firebase");
