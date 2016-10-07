@@ -2,6 +2,15 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var five = require('johnny-five');
+var Raspi = require("raspi-io");
+var board = new five.Board({
+	io: new Raspi()
+});
+
+board.on("ready", function(){
+	var led = new five.Led("P1-15");
+	led.blink(1000);
+});
 
 var firebase = require("firebase");
 firebase.initializeApp({
