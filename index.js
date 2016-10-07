@@ -8,7 +8,7 @@ var board = new five.Board({
 });
 
 board.on("ready", function(){
-    motor = new five.Motor("P1-15");
+    motor = new five.Motor("P1-32");
     board.repl.inject({motor: motor});
 
     motor.on("start", function(){
