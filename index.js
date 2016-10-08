@@ -1,30 +1,22 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var five = require('johnny-five'), board, motor, led;
-var Raspi = require("raspi-io");
-var board = new five.Board({
-	io: new Raspi()
-});
+var Cylon = require("cylon");
 
-board.on("ready", function(){
-    motor = new five.Motor("P1-32");
-    board.repl.inject({motor: motor});
+Cylon.robot({
 
-    motor.on("start", function(){
-        console.log("start", Date.now());
+	connections: {
+		raspi: {adaptor: 'raspi'}
+	},
 
-        board.wait(2000, function(){
-            motor.stop();
-        });
-    });
+	devices: {
+		led: {driver: 'led', pin: 11}
+	},
 
-    motor.on("stop", function(){
-        console.log("stop", Date.now());
-    });
-
-    motor.start();
-});
+	work: function(my) {
+		every((1).second(), my.led.toggle);
+	}
+}).start();
 
 var firebase = require("firebase");
 firebase.initializeApp({
