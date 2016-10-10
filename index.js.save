@@ -5,17 +5,8 @@ var piblaster = require('pi-blaster.js');
 var Cylon = require("cylon");
 
 
-piblaster.setPwm(18, 1 );
-piblaster.setPwm(21, 1 );
-piblaster.setPwm(22, 1 );
 
-setTimeout(function(){
-piblaster.setPwm(18, 0 );
-piblaster.setPwm(21, 0 );
-piblaster.setPwm(22, 0 );
-}, 5000)
-
-/*Cylon.robot({
+Cylon.robot({
 
 	connections: {
 		raspi: {adaptor: 'raspi'}
@@ -33,7 +24,7 @@ piblaster.setPwm(22, 0 );
 		});
 	}
 }).start();
-*/
+
 
 var firebase = require("firebase");
 firebase.initializeApp({
