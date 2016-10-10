@@ -2,38 +2,19 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var piblaster = require('pi-blaster.js');
-var Cylon = require("cylon");
+
+//front right
+piblaster.setPwm(17, 0.5 );
+piblaster.setPwm(27, 0.5 );
+piblaster.setPwm(22, 0.5 );
+
+//front left
+piblaster.setPwm(18, 0.5 );
+piblaster.setPwm(23, 0.5 );
+piblaster.setPwm(24, 0.5 );
 
 
-piblaster.setPwm(18, 1 );
-piblaster.setPwm(21, 1 );
-piblaster.setPwm(22, 1 );
 
-setTimeout(function(){
-piblaster.setPwm(18, 0 );
-piblaster.setPwm(21, 0 );
-piblaster.setPwm(22, 0 );
-}, 5000)
-
-/*Cylon.robot({
-
-	connections: {
-		raspi: {adaptor: 'raspi'}
-	},
-
-	devices: {
-		motor: {driver: 'motor', pin: 11}
-	},
-
-	work: function(my) {
-		my.motor.speed(100);
-
-		after((5).seconds(), function(){
-			my.motor.stop();
-		});
-	}
-}).start();
-*/
 
 var firebase = require("firebase");
 firebase.initializeApp({
