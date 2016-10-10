@@ -3,18 +3,45 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var piblaster = require('pi-blaster.js');
 
-//front right
-piblaster.setPwm(17, 0.5 );
-piblaster.setPwm(27, 0.5 );
-piblaster.setPwm(22, 0.5 );
-
 //front left
-piblaster.setPwm(18, 0.5 );
-piblaster.setPwm(23, 0.5 );
-piblaster.setPwm(24, 0.5 );
+piblaster.setPwm(18, 1 );
+piblaster.setPwm(22, 0 );
+
+
+//front right
+piblaster.setPwm(24, 0 );
+piblaster.setPwm(27, 1 );
+
+//back left
+piblaster.setPwm(25, 0 );
+piblaster.setPwm(21, 0 );
+
+//back right
+piblaster.setPwm(23, 0 );
+piblaster.setPwm(4, 0 );
+
+
+process.on("SIGINT", function(){
+	piblaster.setPwm(18, 0 );
+	piblaster.setPwm(22, 0 );
 
 
 
+	piblaster.setPwm(24, 0 );
+	piblaster.setPwm(17, 0 );
+	piblaster.setPwm(27, 0 );
+
+
+	piblaster.setPwm(25, 0 );
+	piblaster.setPwm(21, 0 );
+
+	piblaster.setPwm(23, 0 );
+	piblaster.setPwm(4, 0 );
+	
+	setTimeout(function(){
+		process.exit();	
+	}, 500)
+});
 
 var firebase = require("firebase");
 firebase.initializeApp({
