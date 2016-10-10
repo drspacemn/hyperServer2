@@ -4,44 +4,22 @@ var io = require('socket.io')(http);
 var piblaster = require('pi-blaster.js');
 
 //front left
-piblaster.setPwm(18, 1 );
-piblaster.setPwm(22, 0 );
+// piblaster.setPwm(18, 1 );
+// piblaster.setPwm(22, 0 );
 
 
 //front right
-piblaster.setPwm(24, 0 );
-piblaster.setPwm(27, 1 );
+// piblaster.setPwm(24, 0 );
+// piblaster.setPwm(27, 1 );
 
 //back left
-piblaster.setPwm(25, 0 );
-piblaster.setPwm(21, 0 );
+// piblaster.setPwm(25, 0 );
+// piblaster.setPwm(21, 0 );
 
 //back right
-piblaster.setPwm(23, 0 );
-piblaster.setPwm(4, 0 );
+// piblaster.setPwm(23, 0 );
+// piblaster.setPwm(4, 0 );
 
-
-process.on("SIGINT", function(){
-	piblaster.setPwm(18, 0 );
-	piblaster.setPwm(22, 0 );
-
-
-
-	piblaster.setPwm(24, 0 );
-	piblaster.setPwm(17, 0 );
-	piblaster.setPwm(27, 0 );
-
-
-	piblaster.setPwm(25, 0 );
-	piblaster.setPwm(21, 0 );
-
-	piblaster.setPwm(23, 0 );
-	piblaster.setPwm(4, 0 );
-	
-	setTimeout(function(){
-		process.exit();	
-	}, 500)
-});
 
 var firebase = require("firebase");
 firebase.initializeApp({
@@ -67,7 +45,14 @@ goProRef.on('value', function(snap){
            var interval = snap[key].interval * 1000;
 
            var move = function(){
-               console.log(numMovements)
+               console.log('pi on')
+               piblaster.setPwm(18, 1 );    
+               piblaster.setPwm(22, 0 );
+               setTimeout(function(){
+                   console.log('pi off')
+                   piblaster.setPwm(18, 0 );    
+                   piblaster.setPwm(22, 0 );
+               }, 1000)
                numMovements--;  
                if(numMovements < 0){
                clearInterval(this);
@@ -125,6 +110,28 @@ io.on('connection', function(socket){
         io.emit('chat message', msg);
     })
 })
+
+process.on("SIGINT", function(){
+	piblaster.setPwm(18, 0 );
+	piblaster.setPwm(22, 0 );
+
+
+
+	piblaster.setPwm(24, 0 );
+	piblaster.setPwm(17, 0 );
+	piblaster.setPwm(27, 0 );
+
+
+	piblaster.setPwm(25, 0 );
+	piblaster.setPwm(21, 0 );
+
+	piblaster.setPwm(23, 0 );
+	piblaster.setPwm(4, 0 );
+	
+	setTimeout(function(){
+		process.exit();	
+	}, 500)
+});
 
 http.listen(3030, function(){
     console.log('listening on *:3030');
