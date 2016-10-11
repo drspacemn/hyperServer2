@@ -73,6 +73,7 @@ goProRef.on('value', function(snap){
         }        
     }    
 })
+
 var iPhoneRef = firebase.database().ref().child('iPhoneHyper');
 iPhoneRef.on('value', function(snap){
     var snap = snap.val();    
@@ -106,6 +107,19 @@ iPhoneRef.on('value', function(snap){
             }, 10000);        
         }        
     }  
+})
+//ref.child('control').push({x: result.x, y: result.y, z: result.z})
+var ControlRef = firebase.database().ref().child('control');
+ControlRef.on('child_added', function(snap){
+    var throttle = snap.val().z;
+    if(throttle > 0){
+        var deci = throttle/10;
+        piblaster.setPwm(18, deci );    
+        piblaster.setPwm(22, 0 );
+    }else {
+        piblaster.setPwm(18, 0 );    
+        piblaster.setPwm(22, 0 );
+    }
 })
 
 function inProgress(ref, key){
