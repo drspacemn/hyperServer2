@@ -40,9 +40,9 @@ goProRef.on('value', function(snap){
             //time, dist, interval
        console.log('recieved goProTL')
         inProgress(goProRef, key);
-           var numMovements = (snap[key].time * 60) / snap[key].interval;
-           var lengthMovements = snap[key].dist/numMovements;
            var interval = snap[key].interval * 1000;
+           var time = (snap[key].time * 60) * 1000;
+           var movements = time/interval;
 
            var move = function(){
                console.log('pi on')
@@ -53,12 +53,14 @@ goProRef.on('value', function(snap){
                    piblaster.setPwm(18, 0 );    
                    piblaster.setPwm(22, 0 );
                }, 1000)
-               numMovements--;  
-               if(numMovements < 0){
-               clearInterval(this);
-               goProRef.child(key).update({isDone: true})
-            }
+               movements--;
+               console.log(movements);
+               if(movements <= 0){
+                clearInterval(this);
+                goProRef.child(key).update({isDone: true})
+               }                
            }
+            
             
            setInterval(move, interval);
          
