@@ -108,42 +108,36 @@ iPhoneRef.on('value', function(snap){
         }        
     }  
 })
+
 //ref.child('control').push({x: result.x, y: result.y, z: result.z})
 var ControlRef = firebase.database().ref().child('control');
 ControlRef.on('child_added', function(snap){
+    console.log(snap.val())
+    if(snap.val().x === 'kill engines'){
+        killEngines();
+    }
     var throttle = snap.val().z;
-    if(throttle > 0){
+    if(throttle > 0 && throttle !== null){
         var deci = throttle/10;
-	console.log(deci);
+	    console.log(deci);
         piblaster.setPwm(18, deci );    
-        piblaster.setPwm(22, 0 );
-    }else {
-        piblaster.setPwm(18, 0 );    
         piblaster.setPwm(22, 0 );
     }
 })
+
+process.on("SIGINT", function(){
+    killEngines();
+	setTimeout(function(){
+		process.exit();	
+	}, 500)
+});
 
 function inProgress(ref, key){
     return ref.child(key).update({isDone: 'inProgress'})
 }
 
-app.get('/', function(req, res, next){
-    res.send('recieved socket');
-});
-
-io.on('connection', function(socket){
-    console.log('a user connected');
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
-    })
-    socket.on('chat message', function(msg){
-        console.log(msg)
-        io.emit('chat message', msg);
-    })
-})
-
-process.on("SIGINT", function(){
-	piblaster.setPwm(18, 0 );
+function killEngines(){
+    piblaster.setPwm(18, 0 );
 	piblaster.setPwm(22, 0 );
 
 
@@ -158,10 +152,10 @@ process.on("SIGINT", function(){
 
 	piblaster.setPwm(23, 0 );
 	piblaster.setPwm(4, 0 );
-	
-	setTimeout(function(){
-		process.exit();	
-	}, 500)
+    console.log('engines killed')
+}
+app.get('/', function(req, res, next){
+    res.send('recieved socket');
 });
 
 http.listen(3030, function(){
