@@ -85,7 +85,7 @@ iPhoneRef.on('value', function(snap){
         inProgress(iPhoneRef, key);
            var iinterval = snap[key].iPhoneInt * 1000;
            var itime = (snap[key].iPhoneTime * 60) * 1000;
-           var imovements = time/interval;
+           var imovements = itime/iinterval;
 
            var imove = function(){
             console.log('pi on')
@@ -102,7 +102,7 @@ iPhoneRef.on('value', function(snap){
                iPhoneRef.child(key).update({isDone: true})
             }
            }
-           setInterval(imove, interval);
+           setInterval(imove, iinterval);
             }, 10000);        
         }        
     }  
