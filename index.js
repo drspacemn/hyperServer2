@@ -52,7 +52,7 @@ goProRef.on('value', function(snap){
                    console.log('pi off')
                    piblaster.setPwm(18, 0 );    
                    piblaster.setPwm(22, 0 );
-               }, 1000)
+               }, 500)
                movements--;
                console.log(movements);
                if(movements <= 0){
