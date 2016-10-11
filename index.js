@@ -42,6 +42,12 @@ goProRef.on('value', function(snap){
         inProgress(goProRef, key);
            var interval = snap[key].interval * 1000;
            var time = (snap[key].time * 60) * 1000;
+           var timeout;
+           if(interval > 3000){
+               timeout = 1000;
+           }else{
+               timeout = 500;
+           }
            var movements = time/interval;
 
            var move = function(){
@@ -52,7 +58,7 @@ goProRef.on('value', function(snap){
                    console.log('pi off')
                    piblaster.setPwm(18, 0 );    
                    piblaster.setPwm(22, 0 );
-               }, 500)
+               }, timeout)
                movements--;
                console.log(movements);
                if(movements <= 0){
