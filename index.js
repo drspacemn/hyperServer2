@@ -79,22 +79,30 @@ iPhoneRef.on('value', function(snap){
    
     for(var key in snap){
         if(!snap[key].isDone){
-            //iPhoneTime iPhoneDist iPhoneCurve
+            //iPhoneTime iPhoneInt iPhoneCurve
             console.log('recieved iPhoneTL')
         setTimeout(function(){
         inProgress(iPhoneRef, key);
-           var numMovements = (snap[key].iPhoneTime * 60);
-           var lengthMovements = snap[key].iPhoneDist/numMovements;
+           var iinterval = snap[key].iPhoneInt * 1000;
+           var itime = (snap[key].iPhoneTime * 60) * 1000;
+           var imovements = time/interval;
 
-           var move = function(){
-               console.log(numMovements)
-               numMovements--;  
-               if(numMovements < 0){
+           var imove = function(){
+            console.log('pi on')
+               piblaster.setPwm(18, 1 );    
+               piblaster.setPwm(22, 0 );
+               setTimeout(function(){
+                   console.log('pi off')
+                   piblaster.setPwm(18, 0 );    
+                   piblaster.setPwm(22, 0 );
+               }, 1000)
+               imovements--;  
+               if(imovements < 0){
                clearInterval(this);
                iPhoneRef.child(key).update({isDone: true})
             }
            }
-           setInterval(move, 1000);
+           setInterval(imove, interval);
             }, 10000);        
         }        
     }  
