@@ -114,6 +114,7 @@ ControlRef.on('child_added', function(snap){
     var throttle = snap.val().z;
     if(throttle > 0){
         var deci = throttle/10;
+	console.log(deci);
         piblaster.setPwm(18, deci );    
         piblaster.setPwm(22, 0 );
     }else {
