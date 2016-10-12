@@ -38,6 +38,43 @@ piblaster.setPwm(17, 0 );
 piblaster.setPwm(23, 0 );
 piblaster.setPwm(4, 1 );
 }
+function turnRight(){
+//front left
+piblaster.setPwm(18, 0.92 );
+piblaster.setPwm(22, 0 );
+
+
+//front right
+piblaster.setPwm(24, 0 );
+piblaster.setPwm(27, 0 );
+
+//back left
+piblaster.setPwm(25, 0.92 );
+piblaster.setPwm(17, 0 );
+
+//back right
+piblaster.setPwm(23, 0 );
+piblaster.setPwm(4, 0 );
+}
+
+function turnLeft(){
+//front left
+piblaster.setPwm(18, 0 );
+piblaster.setPwm(22, 0 );
+
+
+//front right
+piblaster.setPwm(24, 0 );
+piblaster.setPwm(27, 1 );
+
+//back left
+piblaster.setPwm(25, 0 );
+piblaster.setPwm(17, 0 );
+
+//back right
+piblaster.setPwm(23, 0 );
+piblaster.setPwm(4, 1 );
+}
 
 var firebase = require("firebase");
 firebase.initializeApp({
@@ -81,8 +118,6 @@ goProRef.on('value', function(snap){
                 goProRef.child(key).update({isDone: true})
                }                
            }
-            
-            
            setInterval(move, interval);
          
         }        
@@ -134,21 +169,32 @@ ControlRef.on('child_added', function(snap){
 	allOn();
 	console.log('full steam ahead');
 	}
+    //--y == left ++ y == right
+
+    if(snap.val().y < -3){
+        console.log('turning left');
+        turnLeft();
+    }
+
+    if(snap.val().y > 3){
+        console.log('turning right');
+        turnRight();
+    }
+
     if(throttle > 0 && throttle !== null){
         var deci = throttle/10;
 	    console.log(deci);
-piblaster.setPwm(18, deci );
-piblaster.setPwm(22, 0 );
+        piblaster.setPwm(18, deci );
+        piblaster.setPwm(22, 0 );
 
-piblaster.setPwm(24, 0 );
-piblaster.setPwm(27, deci );
+        piblaster.setPwm(24, 0 );
+        piblaster.setPwm(27, deci );
 
-piblaster.setPwm(25, deci );
-piblaster.setPwm(17, 0 );
+        piblaster.setPwm(25, deci );
+        piblaster.setPwm(17, 0 );
 
-piblaster.setPwm(23, 0 );
-piblaster.setPwm(4, deci );
-	  
+        piblaster.setPwm(23, 0 );
+        piblaster.setPwm(4, deci ); 
   }
 })
 
