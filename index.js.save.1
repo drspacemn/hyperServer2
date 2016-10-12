@@ -20,24 +20,23 @@ const pidFile = "/run/hyperserver.pid";
 //});
 
 
-function allOn(){
 //front left
-piblaster.setPwm(18, 0.92 );
+piblaster.setPwm(18, 0.5 );
 piblaster.setPwm(22, 0 );
 
 
 //front right
 piblaster.setPwm(24, 0 );
-piblaster.setPwm(27, 1 );
+piblaster.setPwm(27, 0.5 );
 
 //back left
-piblaster.setPwm(25, 0.92 );
-piblaster.setPwm(17, 0 );
+piblaster.setPwm(25, 0.5 );
+piblaster.setPwm(21, 0 );
 
 //back right
 piblaster.setPwm(23, 0 );
-piblaster.setPwm(4, 1 );
-}
+piblaster.setPwm(17, 0.5 );
+
 
 var firebase = require("firebase");
 firebase.initializeApp({
@@ -70,9 +69,12 @@ goProRef.on('value', function(snap){
 
            var move = function(){
                console.log('pi on')
-               allOn();
+               piblaster.setPwm(18, 1 );    
+               piblaster.setPwm(22, 0 );
                setTimeout(function(){
-                   killEngines();
+                   console.log('pi off')
+                   piblaster.setPwm(18, 0 );    
+                   piblaster.setPwm(22, 0 );
                }, timeout)
                movements--;
                console.log(movements);
@@ -105,10 +107,12 @@ iPhoneRef.on('value', function(snap){
 
            var imove = function(){
             console.log('pi on')
-               allOn();
+               piblaster.setPwm(18, 1 );    
+               piblaster.setPwm(22, 0 );
                setTimeout(function(){
                    console.log('pi off')
-                   killEngines();
+                   piblaster.setPwm(18, 0 );    
+                   piblaster.setPwm(22, 0 );
                }, 1000)
                imovements--;  
                if(imovements < 0){
@@ -130,26 +134,12 @@ ControlRef.on('child_added', function(snap){
         killEngines();
     }
     var throttle = snap.val().z;
-    if(throttle > 0 && snap.val().x < 0){
-	allOn();
-	console.log('full steam ahead');
-	}
     if(throttle > 0 && throttle !== null){
         var deci = throttle/10;
 	    console.log(deci);
-piblaster.setPwm(18, deci );
-piblaster.setPwm(22, 0 );
-
-piblaster.setPwm(24, 0 );
-piblaster.setPwm(27, deci );
-
-piblaster.setPwm(25, deci );
-piblaster.setPwm(17, 0 );
-
-piblaster.setPwm(23, 0 );
-piblaster.setPwm(4, deci );
-	  
-  }
+        piblaster.setPwm(18, deci );    
+        piblaster.setPwm(22, 0 );
+    }
 })
 
 process.on("SIGINT", function(){
