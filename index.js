@@ -165,25 +165,29 @@ ControlRef.on('child_added', function(snap){
         killEngines();
     }
     var throttle = snap.val().z;
-    if(throttle > 0 && snap.val().x < 0){
+    if(throttle > 0 && snap.val().x < 0 ){
 	allOn();
 	console.log('full steam ahead');
 	}
     //--y == left ++ y == right
 
-    if(snap.val().y < -3){
+    else if(snap.val().y < -3){
         console.log('turning left');
         turnLeft();
     }
 
-    if(snap.val().y > 3){
+    else if(snap.val().y > 3){
         console.log('turning right');
         turnRight();
     }
 
-    if(throttle > 0 && throttle !== null){
+    else if(throttle > 0 && throttle !== null){
         var deci = throttle/10;
+        if(deci > 0.7){
+            deci = 1;
+        }
 	    console.log(deci);
+
         piblaster.setPwm(18, deci );
         piblaster.setPwm(22, 0 );
 
