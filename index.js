@@ -18,7 +18,7 @@ const pidFile = "/run/hyperserver.pid";
 	//console.log(err)
 //}
 //});
-
+killEngines();
 
 function allOn(){
 //front left
@@ -27,8 +27,8 @@ piblaster.setPwm(22, 0 );
 
 
 //front right
-piblaster.setPwm(24, 0 );
-piblaster.setPwm(27, 1 );
+ piblaster.setPwm(21, 1 );
+piblaster.setPwm(27, 0 );
 
 //back left
 piblaster.setPwm(25, 0.92 );
