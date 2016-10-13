@@ -45,7 +45,7 @@ piblaster.setPwm(22, 0 );
 
 
 //front right
-piblaster.setPwm(24, 0 );
+piblaster.setPwm(21, 0 );
 piblaster.setPwm(27, 0 );
 
 //back left
@@ -64,7 +64,7 @@ piblaster.setPwm(22, 0 );
 
 
 //front right
-piblaster.setPwm(24, 0 );
+piblaster.setPwm(21, 0 );
 piblaster.setPwm(27, 1 );
 
 //back left
@@ -191,7 +191,7 @@ ControlRef.on('child_added', function(snap){
         piblaster.setPwm(18, deci );
         piblaster.setPwm(22, 0 );
 
-        piblaster.setPwm(24, 0 );
+        piblaster.setPwm(21, 0 );
         piblaster.setPwm(27, deci );
 
         piblaster.setPwm(25, deci );
@@ -219,7 +219,7 @@ function killEngines(){
 
 
 
-	piblaster.setPwm(24, 0 );
+	piblaster.setPwm(21, 0 );
 	piblaster.setPwm(17, 0 );
 	piblaster.setPwm(27, 0 );
 
