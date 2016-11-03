@@ -22,25 +22,26 @@ killEngines();
 
 function allOn(){
 //front left
-piblaster.setPwm(18, 0.92 );
+piblaster.setPwm(18, 0.9 );
 piblaster.setPwm(22, 0 );
 
 
 //front right
- piblaster.setPwm(21, 1 );
-piblaster.setPwm(27, 0 );
+ piblaster.setPwm(21, 0 );
+piblaster.setPwm(27, 1 );
 
 //back left
-piblaster.setPwm(25, 0.92 );
+piblaster.setPwm(25, 0.9 );
 piblaster.setPwm(17, 0 );
 
 //back right
 piblaster.setPwm(23, 0 );
 piblaster.setPwm(4, 1 );
 }
+
 function turnRight(){
 //front left
-piblaster.setPwm(18, 0.92 );
+piblaster.setPwm(18, 0.9 );
 piblaster.setPwm(22, 0 );
 
 
@@ -49,7 +50,7 @@ piblaster.setPwm(21, 0 );
 piblaster.setPwm(27, 0 );
 
 //back left
-piblaster.setPwm(25, 0.92 );
+piblaster.setPwm(25, 0.9 );
 piblaster.setPwm(17, 0 );
 
 //back right
